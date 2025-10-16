@@ -2,8 +2,7 @@
 
 from libcpp.string cimport string
 
-# === KHAI BÁO CÁC CẤU TRÚC DỮ LIỆU TỪ robot_types.h ===
-# Dùng "ctypedef struct" để báo cho Cython đây là một type alias
+# ===robot_types.h ===
 cdef extern from "third_party/Lite3_MotionSDK/include/robot_types.h":
     
     ctypedef struct JointData:
@@ -28,7 +27,7 @@ cdef extern from "third_party/Lite3_MotionSDK/include/robot_types.h":
     ctypedef struct RobotCmd:
         JointCmd joint_cmd[12]
 
-# === KHAI BÁO CÁC LỚP (CLASS) C++ (Phần này giữ nguyên) ===
+# ======sender.h, receiver.h motionexample.h=======
 cdef extern from "third_party/Lite3_MotionSDK/include/sender.h":
     cdef cppclass Sender:
         Sender(string ip, unsigned short port)

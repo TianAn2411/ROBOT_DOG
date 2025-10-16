@@ -1,17 +1,10 @@
-# lite3_controller.pyx
-
-# Import các khai báo từ file .pxd của chúng ta
 from sdk_wrapper.sdk_bridge cimport RobotData, RobotCmd, Sender, Receiver, MotionExample
 
-# Import các thư viện C++ và Python cần thiết
 from libcpp.string cimport string
 import time
 
-# "cdef class" định nghĩa một lớp Python nhưng có khả năng chứa
-# các thuộc tính và tốc độ của C.
 cdef class Lite3Controller:
-    # --- Khai báo các thuộc tính C++ ---
-    # Các biến này là con trỏ trực tiếp tới các đối tượng C++ trong bộ nhớ.
+
     cdef Sender* sender_ptr
     cdef Receiver* receiver_ptr
     cdef MotionExample* motion_ptr
@@ -29,21 +22,16 @@ cdef class Lite3Controller:
         # Chuyển đổi bytes của Python thành string của C++
         cdef string ip_str = remote_ip
         
-        # Dùng từ khóa "new" để tạo các đối tượng C++ trên bộ nhớ heap
+        # cấp phát bộ nhớ cho các đối tượng
         self.sender_ptr = new Sender(ip_str, port)
         self.receiver_ptr = new Receiver()
         self.motion_ptr = new MotionExample()
         
         # Bắt đầu luồng nhận dữ liệu chạy nền của Receiver
         self.receiver_ptr.StartWork()
-        print(f"Bắt đầu nhận dữ liệu từ robot...")
+        
 
     def __dealloc__(self):
-        """
-        Hàm hủy của Cython, được gọi khi đối tượng bị xóa.
-        Rất quan trọng để giải phóng bộ nhớ đã cấp phát, tránh rò rỉ bộ nhớ.
-        """
-        # Dùng từ khóa "del" để gọi hàm hủy của các đối tượng C++
         del self.sender_ptr
         del self.receiver_ptr
         del self.motion_ptr
