@@ -22,7 +22,7 @@ extensions = [
         ],
 
         # 1. ADD THIS: Tell the linker where to look for library files
-        library_dirs=["third_party/Lite3_MotionSDK/lib"],
+        library_dirs=["third_party/Lite3_MotionSDK/include/lib"],
 
         # 2. ADD THIS: Tell the linker WHICH library to use
         libraries=['deeprobotics_legged_sdk_x86_64'], 
