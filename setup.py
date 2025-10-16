@@ -1,10 +1,12 @@
-# setup.py (Final Version)
+# setup.py (Phiên bản cho cấu trúc thư mục mới)
+import os
 from setuptools import setup, Extension
 from Cython.Build import cythonize
-import os
 
-# Get the absolute path to the directory containing this setup.py file
-here = os.path.abspath(os.path.dirname(__file__))
+# Lấy đường dẫn tuyệt đối để đảm bảo các đường dẫn khác luôn đúng
+SETUP_DIR = os.path.dirname(os.path.abspath(__file__))
+# CẬP NHẬT ĐƯỜNG DẪN ĐỂ TRỎ VÀO BÊN TRONG THƯ MỤC "include"
+LIB_DIR = os.path.join(SETUP_DIR, 'third_party', 'Lite3_MotionSDK', 'include', 'lib')
 
 extensions = [
     Extension(
@@ -18,21 +20,19 @@ extensions = [
             "sdk_wrapper",
             "third_party/Lite3_MotionSDK/include",
             "third_party/Lite3_MotionSDK/include/common", 
-            "/usr/include/eigen3", 
+            # Giả sử Eigen cũng nằm trong thư mục lib mới
+            "third_party/Lite3_MotionSDK/include/lib/eigen3", 
         ],
-
-        # 1. ADD THIS: Tell the linker where to look for library files
-        library_dirs=["third_party/Lite3_MotionSDK/include/lib"],
-
-        # 2. ADD THIS: Tell the linker WHICH library to use
+        
+        # Sửa lại đường dẫn đến thư mục lib cho đúng
+        library_dirs=[LIB_DIR],
+        
         libraries=['deeprobotics_legged_sdk_x86_64'], 
 
         language="c++",
         extra_compile_args=["-std=c++17", "-O2"],
-
-        # 3. ADD THIS: This is crucial for runtime. It bakes the path to the library
-        # into your compiled wrapper so Python can find it when you import.
-        extra_link_args=[f'-Wl,-rpath,{os.path.join(here, "third_party/Lite3_MotionSDK/lib")}'], 
+        # Đảm bảo đường dẫn rpath cũng đúng và là đường dẫn tuyệt đối
+        extra_link_args=[f'-Wl,-rpath,{LIB_DIR}'], 
     )
 ]
 

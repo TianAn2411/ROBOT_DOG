@@ -4,7 +4,6 @@
 {
     "distutils": {
         "depends": [
-            "/usr/include/eigen3/Eigen/Dense",
             "third_party/Lite3_MotionSDK/include/motionexample.h",
             "third_party/Lite3_MotionSDK/include/receiver.h",
             "third_party/Lite3_MotionSDK/include/robot_types.h",
@@ -14,18 +13,27 @@
             "-std=c++17",
             "-O2"
         ],
+        "extra_link_args": [
+            "-Wl,-rpath,/home/thienantruong/ROBOT_DOG/Lite3_rl_deploy/third_party_clone/Lite3_MotionSDK/include/lib"
+        ],
         "include_dirs": [
             ".",
             "sdk_wrapper",
-            "third_party/Lite3_MotionSDK/include",
-            "third_party/Lite3_MotionSDK/include/common",
-            "/usr/include/eigen3"
+            "third_party_clone/Lite3_MotionSDK/include",
+            "third_party_clone/Lite3_MotionSDK/include/common",
+            "third_party_clone/Lite3_MotionSDK/include/lib/eigen3"
         ],
         "language": "c++",
+        "libraries": [
+            "deeprobotics_legged_sdk_x86_64"
+        ],
+        "library_dirs": [
+            "/home/thienantruong/ROBOT_DOG/Lite3_rl_deploy/third_party_clone/Lite3_MotionSDK/include/lib"
+        ],
         "name": "sdk_wrapper.lite3_controller",
         "sources": [
             "sdk_wrapper/lite3_controller.pyx",
-            "third_party/Lite3_MotionSDK/src/motionexample.cpp"
+            "third_party_clone/Lite3_MotionSDK/src/motionexample.cpp"
         ]
     },
     "module_name": "sdk_wrapper.lite3_controller"
